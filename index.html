@@ -1,74 +1,149 @@
 <!DOCTYPE html>
     <head>
-        <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
         <!-- <link href="tailwind.css" rel="stylesheet"> -->
         <link rel="stylesheet" href="css/stylesheet.css" />
     </head>
     <body>
-        <div class="container mx-auto">
-            <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-                <div class="max-w-md w-full space-y-8">
-                  <form class="mt-8 space-y-6" id="new-user-form">
-                    <div class="rounded-md shadow-sm -space-y-px">
-                      <div>
-                        <label for="email-address" class="sr-only">Email address</label>
-                        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
-                      </div>
-                      <div>
-                        <label for="name" class="sr-only">Name</label>
-                        <input id="name" name="name" type="name"  required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Name">
-                      </div>
+        <!-- <div class="container mx-auto"> -->
+          <!-- This example requires Tailwind CSS v2.0+ -->
+          <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+            
+                  <div class="hidden sm:block sm:ml-6">
+                    <div class="flex space-x-4">
+<!--! not working right. Check class names to see why it's not finding them.-->
+                      <a href="#" class="all-timeslots text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">All Timeslots</a>
+
+                      <a href="#" class="available-timeslots text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Available Timeslots</a>
+
+                      <a href="#" class="my-timeslots text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">My Timeslots</a>
                     </div>
-                    <div>
-                      <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  </div>
+                </div>
+              
+              </div>
+            
+
+            <!-- Mobile menu, show/hide based on menu state. -->
+            <div class="sm:hidden" id="mobile-menu">
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">All Timeslots</a>
+
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Available Timeslots</a>
+
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">My Timeslots</a>
+              </div>
+            </div>
+          </nav>
+
+
+
+          <!--begin my original code-->
+            <div class="parent-div min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+              <form class="mt-8 space-y-6 new-user-form">
+                <div class="rounded-md shadow-sm -space-y-px">
+                  <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="user[email]" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                  </div>
+                  <div>
+                    <label for="name" class="sr-only">Name</label>
+                    <input id="name" name="user[name]"  required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Name">
+                  </div>
+                </div>
+                <div>
+                  <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                      <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                    Submit
+                  </button> 
+                </div>
+              </form>
+            <!-- </div> -->
+
+            <div class="timeslot-form-div">
+              <h2 class="timeslot-h2">Timeslots</h2>
+              <h3>Enter all the times you are available to pair</h3>
+              <form id="new-timeslot-form" class="mt-8 space-y-6">
+                  <div id="parent-div">
+                      <div class="rounded-md shadow-sm -space-y-px input" id="form-inputs">
+                          <label for="activity" class="sr-only">Activity:</label>
+                          <input type="text" id="activity"name="timeslot[activity]" placeholder="activity" class="activity appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" />
+                          <br>
+                          <label for="booked_time" class="sr-only">Booked Time:</label>
+                          <input type="datetime-local" id="booked_time" name="timeslot[booked_time]" class="booked-time-input appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" />
+                          <br>
+
+                          <button type="button" class="delete-button group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                              <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                              </svg>
+                            </span>
+                            Delete
+                          </button> 
+                      </div>
+                  </div>
+                      <button type="button" id="duplicate" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                           <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                           </svg>
                         </span>
-                        Submit
+                        Duplicate
                       </button> 
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-            <div class="timeslot-form-div">
-              <h2 class="timeslot-h2">Timeslots</h2>
-              <h3>Enter all the times you are available to pair</h3>
-              <form id="new-timeslot-form">
-                  <div id="parent-div">
-                      <div class="input" id="form-inputs" data-id=`${inputCounter}`>
-                          <input type="text" name="activity" placeholder="activity" />
-                          <br>
-                          <input type="datetime-local" name="booked_time" id="booked-time-input" />
-                          <br>
-                          <button type="button" name="delete">Delete</button>
-                      </div>
-                  </div>
-                      <button type="button" name="duplicate" id="duplicate">Duplicate</button>
-                      <input type="hidden" name="user_id" class="hidden-user-id" />
-                  <input type="submit" name="submit" />
+                      <input type="hidden" name="timeslot[user_id]" class="hidden-user-id" />
+                  <input type="submit" value="Submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" />
               </form>
             </div>
             
-            <div class="timeslot-table-div">
-              <table id="timeslot-table">
-                <thead>
-                  <tr>
-                    <td>Activity: </td>
-                    <td>Booked Time: </td>
-                    <td>With: </td>
-                    <td>Taken: </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
-            </div>
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="flex flex-col timeslot-table-div">
+  <div class="  sm:-mx-6 lg:-mx-8"><!-- -my-2, overflow-x-auto-->
+    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8"><!-- align-middle -->
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200" id="timeslot-table">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Activity
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Booked Time
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                With
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Taken
+              </th>
+             
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+            
+            </div> 
           </div>
+         </div>
+      </div>
           </body>
           <script src="src/ApiService.js" ></script>
           <script src="src/Timeslot.js" ></script>

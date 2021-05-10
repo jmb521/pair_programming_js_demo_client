@@ -1,3 +1,10 @@
-/* body {
-    background-color: blue;
-} */
+.timeslot-table-div {
+    display: none;
+}
+
+
+
+.timeslot-form-div {
+    display: none;
+}
+
