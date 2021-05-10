@@ -1,113 +1,126 @@
     const api = new ApiService
-    
+    //put in everything you want to execute when the
     function init() {
-        let newUserForm = document.getElementById("new-user-form")
-        newUserForm.addEventListener("submit", function(event) {
-            let user = {}
-            event.preventDefault()
-            Array.from(event.target).forEach(e => {
-                if(e.type !== "submit") {
-                   user[e.name] = e.value
-                    // user = Object.assign(...user, ...{[e.name]: e.value})
-                }
-              
-                
-                debugger
-            })
-            api.createNewUser(user)
-            .then(response => {
-                if(!response.error) {
-
-                    new User(response)
-                    debugger
-                }
-             
-            })
+        eventListeners()
+        api.getAllTimeslots()
+    }
+    function eventListeners() {
+        let newUserForm = document.querySelector("form")
+        newUserForm.addEventListener("submit", submitUser) 
+        let duplicateButton = document.getElementById("duplicate")
+        duplicateButton.addEventListener("click", duplicateTimeslotEntry)
+        const newTimeslotForm = document.querySelector("#new-timeslot-form")
+        newTimeslotForm.addEventListener("submit", function(event) {
+            submitTimeslot(event)
         })
-        const timeslotTable = document.querySelector(".timeslot-table-div")
-        timeslotTable.style.display = "none"
-        const newTimeslotForm = document.querySelector(".timeslot-form-div")
-        newTimeslotForm.style.display = "none"
+        document.addEventListener("click", function(event) {
+            if(event.target.matches(".delete-button")) {
+                event.preventDefault()
+                deleteTimeslotInputs(event)
+            }
+            if(event.target.matches(".all-timeslots")) {
+                event.preventDefault()
+                const tBody = document.querySelector("tbody")
+                tBody.innerHTML = ""
+                appendTimeslotToDom(Timeslots.allTimeslots)
+            }
+            if(event.target.matches(".available-timeslots")) {
+                event.preventDefault()
+                const available = Timeslots.allTimeslots.filter((timeslot) => timeslot.taken === false)
+
+                appendTimeslotToDom(available)                
+            }
+            if(event.target.matches(".my-timeslots")) {
+                event.preventDefault()
+                const hiddenUserId = document.querySelector(".hidden-user-id")
+                appendTimeslotToDom(hiddenUserId.value)
+            }
+        })
+        document.addEventListener("submit", function(event) {
+            if(event.target.matches(".claim-timeslot")) {
+                event.preventDefault()
+                claimTimeslot(event)
+            }
+        })
     }
 
 
-    const tBody = document.querySelector("tbody")
+    //done
+    function submitUser(event) {
+        event.preventDefault()
+        api.createNewUser(new FormData(event.target))
+        .then(response => {
+            if(!response.error) {
+                  let currentUser = new User(response)
 
-
+                hideUserForm()
+                showTimeslot()
+                const hiddenUserId = document.querySelector(".hidden-user-id")
+                hiddenUserId.value = currentUser.id
+              }
+        })
+    }
     
-        
-        
-    
-    
+    function duplicateTimeslotEntry() {
 
-    // document.addEventListener("click", function(event) {
-    //     if(event.target.matches(".timeslot-h2")) {
-    //         event.preventDefault()
-    //         console.log(event.target)
-    //     }
-        
-    // })
-
-    // const timeslotURL = "http://localhost:3000/timeslots"
-    // function createNewUser(user_info) {
-
-        // fetch("http://localhost:3000/users", {
-        //     method: "POST", 
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     }, 
-        //     body: JSON.stringify({
-        //         user: {
-        //             email: user_info[0].value, 
-        //             name: user_info[1].value
-        //         }
-        //     })
-        // })
-        // .then(response => response.json())
-        //! update the dom with user information
-        //! display the timeslot form.
-        // .then(response => console.log("response", response))
-    // }
-
-
-    // function updateTimeslot(timeslot) {
-
-    //     // fetch(`${timeslotURL}/${timeslot.id}`, {
-    //     //     method: "PATCH", 
-    //     //     headers: {
-    //     //         "content-type": "application/json", 
-    //     //         accepts: "application/json"
-    //     //     }, 
-    //     //     body: JSON.stringify({timeslot: timeslot})
-    //     // })
-    //     // .then(response => response.json())
-    //     .then(response => console.log("updated response", response))
-    // }
-
-
-    // function deleteTimeslot(id) {
-    //     fetch(`${timeslotURL}/${id}`, {
-    //         method: "DELETE", 
-    //     })
-    //     .then(response => response.json())
-    //     .then(response => console.log(response))
-    //     //todo use method to remove the timeslot from the dom
-
-    // }
-    let inputCounter = 1;
-    const activityInput = document.getElementById("activity-input")
-    const bookedTimeInput = document.getElementById("booked-time-input")
-    
-    let duplicateButton = document.getElementById("duplicate")
-    let formInputs = document.getElementById("form-inputs")
-    duplicateButton.addEventListener("click", (e) => {
-        e.preventDefault()
+        event.preventDefault()
+        let formInputs = document.getElementById("form-inputs")
         let parentDiv = document.getElementById("parent-div")
         let copyDiv = formInputs.cloneNode(true)
-        copyDiv.setAttribute("data-id", inputCounter += 1)
         parentDiv.appendChild(copyDiv)
-    })
 
+    }
+
+    function showTimeslot() {
+        const timeslotFormDiv = document.querySelector(".timeslot-form-div")
+        timeslotFormDiv.style.display = "block";
+    }
+    function hideUserForm() {
+        const userForm = document.querySelector(".new-user-form")
+        userForm.style.display = "none";
+    }
+
+    function deleteTimeslotInputs(event) {
+        event.target.parentNode.remove()
+    }
+
+    function submitTimeslot(event) {
+        event.preventDefault()
+        if(event.target.elements["timeslot[activity]"].length > 1) {
+            for(let i = 0; i< event.target.elements["timeslot[activity]"].length; i++) {
+                let formData = new FormData
+                formData.append("timeslot[activity]", event.target.elements["timeslot[activity]"][i].value)
+                formData.append("timeslot[booked_time]", event.target.elements["timeslot[booked_time]"][i].value)
+                formData.append("timeslot[user_id]", event.target.elements["timeslot[user_id]"].value)
+                api.createTimeslot(formData)
+            }
+        }else {
+            const formData = new FormData(event.target)
+            api.createTimeslot(formData)
+        }
+    }
+    function showUserTimeslots(user_id) {
+        const eachTimeslot = Timeslots.allTimeslots.filter((timeslot) => timeslot.user_id === user_id)
+        const table = document.querySelector(".timeslot-table-div")
+        table.style.display = "block"
+        appendTimeslotToDom(eachTimeslot)
+    }
+    function appendTimeslotToDom(timeslots) {
+        const tBody = document.querySelector("tbody")        
+        timeslots.forEach(timeslot => tBody.innerHTML += timeslot.addNewTimeslotRow())
+    }
+    
+    function claimTimeslot(event) {
+        const formData = new FormData(event.target)
+        formData.append("timeslot[taken]", true)
+        api.updateTimeslot(formData, event.target.elements["timeslot[id]"].value)
+        .then(response => {
+          event.target.parentNode.innerHTML = "This timeslot has been taken"
+        })
+    }
+    
+    
+    
 
 init()
 

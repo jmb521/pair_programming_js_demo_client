@@ -5,42 +5,51 @@ class ApiService {
         
     }
 
-   static getAllTimeslots() {
+    getAllTimeslots() {
         return fetch(this.baseUrl + "/timeslots")
         .then(response => response.json())
+        .then(response => {
+            response.forEach(timeslot => {
+            const newTimeslot = new Timeslots(timeslot)
+        })
+    })
 
     }
-  
 
+    createTimeslot(timeslots) {
+        return fetch(this.baseUrl + "/timeslots", {
+            method: "POST", 
+            body: timeslots
+        })
+        .then(response => response.json())
+        .then(response => {
+            const newTimeslot = new Timeslots(response)
+            const timeslotFormDiv = document.querySelector(".timeslot-form-div")
+            timeslotFormDiv.style.display = "none";
+            
+            showUserTimeslots(newTimeslot.user_id)
+        })
+    }
 
-    updateTimeslot(timeslot) {
-       return fetch(this.baseUrl + "/timeslots" + timeslot.id, {
+    updateTimeslot(timeslot, id) {
+        debugger;
+       return fetch(this.baseUrl + "/timeslots/" + id, {
             method: "PATCH", 
-            headers: {
-                "content-type": "application/json", 
-                accepts: "application/json"
-            }, 
-            body: JSON.stringify({timeslot: timeslot})
+            body: timeslot
         })
         .then(response => response.json())
     }
     deleteTimeslot(id) {
-
        return fetch(`${this.baseUrl}/timeslots/${id}`, {
             method: "DELETE", 
         })
         .then(response => response.json())
-
     }
+
     createNewUser(user) {
         return fetch(this.baseUrl + "/users", {
             method: "POST", 
-            headers: {
-                "Content-Type": "application/json",
-            }, 
-            body: JSON.stringify({
-                user: user
-            })
+            body: user,
         })
         .then(response => response.json())
     }
